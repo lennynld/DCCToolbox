@@ -1,4 +1,4 @@
-#ifndef UNICODE
+﻿#ifndef UNICODE
 #define UNICODE
 #endif
 
@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-// Zorg dat deze bestanden in je projectmap staan
+// Project bestanden
 #include "database.h" 
 #include "resource.h"
 
@@ -84,19 +84,24 @@ void CreatePage1(HWND p) {
     CreateWindowW(L"STATIC", L"Loc Adres:", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, UI_LBL_W, 22, p, NULL, NULL, NULL);
     hAddr = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, UI_LBL_W + 30, y, UI_EDIT_W, 24, p, NULL, NULL, NULL);
     CreateWindowW(L"BUTTON", L"Bereken CV's", WS_CHILD | WS_VISIBLE, UI_LBL_W + UI_EDIT_W + 50, y - 2, UI_BTN_W, 28, p, (HMENU)ID_BTN_CALC_CV, NULL, NULL);
+
     y += UI_ROW_H + 10;
     CreateWindowW(L"STATIC", L"CV17 (Hoog):", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, UI_LBL_W, 22, p, NULL, NULL, NULL);
     hCV17 = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_READONLY, UI_LBL_W + 30, y, UI_EDIT_W, 24, p, NULL, NULL, NULL);
+
     y += UI_ROW_H;
     CreateWindowW(L"STATIC", L"CV18 (Laag):", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, UI_LBL_W, 22, p, NULL, NULL, NULL);
     hCV18 = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_READONLY, UI_LBL_W + 30, y, UI_EDIT_W, 24, p, NULL, NULL, NULL);
+
     y += UI_ROW_H + 30;
     CreateWindowW(L"STATIC", L"Invoer CV17:", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, UI_LBL_W, 22, p, NULL, NULL, NULL);
     hCV17b = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, UI_LBL_W + 30, y, UI_EDIT_W, 24, p, NULL, NULL, NULL);
+
     y += UI_ROW_H;
     CreateWindowW(L"STATIC", L"Invoer CV18:", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, UI_LBL_W, 22, p, NULL, NULL, NULL);
     hCV18b = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, UI_LBL_W + 30, y, UI_EDIT_W, 24, p, NULL, NULL, NULL);
     CreateWindowW(L"BUTTON", L"Bereken Adres", WS_CHILD | WS_VISIBLE, UI_LBL_W + UI_EDIT_W + 50, y - UI_ROW_H, UI_BTN_W, 28, p, (HMENU)ID_BTN_CALC_ADDR, NULL, NULL);
+
     y += UI_ROW_H + 10;
     CreateWindowW(L"STATIC", L"Resultaat Adres:", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, UI_LBL_W, 22, p, NULL, NULL, NULL);
     hResult = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_READONLY, UI_LBL_W + 30, y, UI_EDIT_W, 24, p, NULL, NULL, NULL);
@@ -134,18 +139,38 @@ void CreatePage3(HWND p) {
 
 void CreatePage4(HWND p) {
     int y = UI_MARGIN;
+
+    // Invoervelden
     CreateWindowW(L"STATIC", L"Fabrikant (CV8):", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, 150, 22, p, NULL, NULL, NULL);
     hCV8In = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, UI_MARGIN + 160, y, 100, 24, p, NULL, NULL, NULL);
     y += UI_ROW_H;
+
     CreateWindowW(L"STATIC", L"Software (CV7):", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, 150, 22, p, NULL, NULL, NULL);
     hCV7In = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, UI_MARGIN + 160, y, 100, 24, p, NULL, NULL, NULL);
     y += UI_ROW_H;
-    CreateWindowW(L"STATIC", L"Model CV (opt):", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, 150, 22, p, NULL, NULL, NULL);
+
+    CreateWindowW(L"STATIC", L"Model ID (CV250):", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, 150, 22, p, NULL, NULL, NULL);
     hCV250In = CreateWindowW(L"EDIT", L"", WS_CHILD | WS_VISIBLE | WS_BORDER | ES_NUMBER, UI_MARGIN + 160, y, 100, 24, p, NULL, NULL, NULL);
-    y += 40;
+    y += UI_ROW_H + 15;
+
+    // Informatieblok over Model ID en afwijkende CV-nummers
+    const wchar_t* cv250_info =
+        L"ℹ️ Wat is Model ID (CV250 / Model CV)?\n"
+        L"• CV8 geeft de fabrikant aan (bijv. 151 = ESU, 145 = ZIMO).\n"
+        L"• CV7 geeft de hoofdversie van de software aan.\n"
+        L"• Fabrikanten met een asterisk (*) ondersteunen Model ID.\n"
+        L"  Let op: niet elk merk gebruikt hiervoor CV250. Het resultaatvak\n"
+        L"  geeft aan welk CV u voor de gekozen fabrikant kunt uitlezen.";
+
+    CreateWindowW(L"STATIC", cv250_info, WS_CHILD | WS_VISIBLE, UI_MARGIN, y, 480, 120, p, NULL, NULL, NULL);
+    y += 135;
+
+    // Actieknop en Resultaat
     CreateWindowW(L"BUTTON", L"Zoek Decoder Op", WS_CHILD | WS_VISIBLE, UI_MARGIN, y, 260, 32, p, (HMENU)ID_BTN_LOOKUP_DEC, NULL, NULL);
-    y += 50;
-    hDecoderResult = CreateWindowW(L"STATIC", L"Resultaat verschijnt hier...", WS_CHILD | WS_VISIBLE | SS_SUNKEN, UI_MARGIN, y, 480, 80, p, NULL, NULL, NULL);
+    y += 45;
+
+    hDecoderResult = CreateWindowW(L"STATIC", L"Voer CV-waarden in en klik op 'Zoek Decoder Op'.",
+        WS_CHILD | WS_VISIBLE | SS_SUNKEN, UI_MARGIN, y, 480, 85, p, NULL, NULL, NULL);
 }
 
 void CreatePage5(HWND p) {
@@ -191,20 +216,25 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
     case WM_COMMAND:
         switch (LOWORD(wParam)) {
-        case IDM_FILE_EXIT: PostQuitMessage(0); break;
-        case IDM_HELP_ABOUT: MessageBoxW(hwnd, L"DCCToolbox v0.8.0 Alpha\n\nOntwikkeld voor modelspoorders.", L"Over", MB_OK | MB_ICONINFORMATION); break;
+        case IDM_FILE_EXIT:
+            PostQuitMessage(0);
+            break;
+        case IDM_HELP_ABOUT:
+            MessageBoxW(hwnd, L"DCC Tool v0.8.5 Alpha\n\nOntwikkeld voor modelspoorders.", L"Over", MB_OK | MB_ICONINFORMATION);
+            break;
         case IDM_HELP_RELEASE_NOTES: {
             std::wstring notes =
-                L"DCCToolbox - Versiehistorie\n"
+                L"DCC Tool - Versiehistorie\n"
                 L"------------------------------------------\n\n"
-                L"Versie 0.8.0 Alpha (Huidig):\n"
-                L"� [NIEUW] Naamswijziging van DCC Calculator naar DCCToolbox.\n\n"
-                L"Versie 0.7.5 Alpha:\n"
-                L"� [NIEUW] Verbetering van de integratie van de Vertraging-calculator.\n"
-                L"� [NIEUW] CV29 Builder genereert nu direct de juiste byte.\n\n"
-                L"Versie 0.7.0 Alpha:\n"
-                L"� Eerste tabblad-gebaseerde interface.\n"
-                L"� Vertraging-calculator toegevoegd.\n";
+                L"Versie 0.8.5 Alpha (Huidig):\n"
+                L"• [NIEUW] Merkspecifieke Model CV-instructies op Tab 4.\n"
+                L"• [NIEUW] Uitgebreide merk-database (ESU, ZIMO, Uhlenbrock, D&H, Lenz, etc.).\n"
+                L"• [NIEUW] Interfacelayout verruimd voor extra uitleg.\n\n"
+                L"Versie 0.8.0 Alpha:\n"
+                L"• Naam wijziging naar DCCToolbox\n\n";
+                L"Versie 0.7.6 Alpha:\n"
+                L"• Verbeterde Vertraging-calculator.\n"
+                L"• CV29 Builder genereert direct de juiste byte.\n";
             MessageBoxW(hwnd, notes.c_str(), L"Release Notes", MB_OK | MB_ICONINFORMATION);
             break;
         }
@@ -225,7 +255,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         case ID_BTN_GEN_CV29: {
             int cv29 = 0;
-            for (int i = 0; i < 8; i++) if (SendMessage(hBuilderBits[i], BM_GETCHECK, 0, 0) == BST_CHECKED) cv29 += (1 << i);
+            for (int i = 0; i < 8; i++) {
+                if (SendMessage(hBuilderBits[i], BM_GETCHECK, 0, 0) == BST_CHECKED) cv29 += (1 << i);
+            }
             SetWindowTextW(hCV29Out, std::to_wstring(cv29).c_str());
             break;
         }
@@ -265,11 +297,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         }
         break;
+
+    case WM_SIZE:
+        SendMessage(hStatus, WM_SIZE, 0, 0);
+        break;
+
     case WM_NOTIFY: {
         LPNMHDR nm = (LPNMHDR)lParam;
         if (nm->code == TCN_SELCHANGE) {
             int sel = TabCtrl_GetCurSel(hTab);
-            const wchar_t* st[] = { L" Bereken CV17/18", L" CV29 Builder", L" CV29 Decoder", L" Decoder Info", L" Vertraging" };
+            const wchar_t* st[] = { L" Bereken CV17/18", L" CV29 Builder", L" CV29 Decode", L" Decoder Info", L" Vertraging" };
             SendMessageW(hStatus, SB_SETTEXTW, 0, (LPARAM)st[sel]);
             ShowWindow(page1, sel == 0 ? SW_SHOW : SW_HIDE);
             ShowWindow(page2, sel == 1 ? SW_SHOW : SW_HIDE);
@@ -279,6 +316,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         break;
     }
+
     case WM_DESTROY:
         if (hUIFont) DeleteObject(hUIFont);
         PostQuitMessage(0);
@@ -287,30 +325,36 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-// --- ENTRY MET FIX C28251 ---
+// --- ENTRY POINT ---
 int WINAPI wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrev, _In_ PWSTR szCmd, _In_ int nShow) {
     InitCommonControls();
+
     WNDCLASS wc = { 0 };
-    wc.lpfnWndProc = WindowProc; wc.hInstance = hInst;
+    wc.lpfnWndProc = WindowProc;
+    wc.hInstance = hInst;
     wc.hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON1));
     wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);
     wc.lpszClassName = L"DCCApp";
     RegisterClass(&wc);
 
     WNDCLASS pc = { 0 };
-    pc.lpfnWndProc = PageProc; pc.hInstance = hInst;
+    pc.lpfnWndProc = PageProc;
+    pc.hInstance = hInst;
     pc.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);
     pc.lpszClassName = L"PageContainer";
     RegisterClass(&pc);
 
     HMENU hMenu = CreateMenu();
-    HMENU hFile = CreatePopupMenu(); AppendMenuW(hFile, MF_STRING, IDM_FILE_EXIT, L"Afsluiten");
+    HMENU hFile = CreatePopupMenu();
+    AppendMenuW(hFile, MF_STRING, IDM_FILE_EXIT, L"Afsluiten");
     AppendMenuW(hMenu, MF_POPUP, (UINT_PTR)hFile, L"Bestand");
-    HMENU hHelp = CreatePopupMenu(); AppendMenuW(hHelp, MF_STRING, IDM_HELP_ABOUT, L"Over...");
+
+    HMENU hHelp = CreatePopupMenu();
+    AppendMenuW(hHelp, MF_STRING, IDM_HELP_ABOUT, L"Over...");
     AppendMenuW(hHelp, MF_STRING, IDM_HELP_RELEASE_NOTES, L"Release Notes");
     AppendMenuW(hMenu, MF_POPUP, (UINT_PTR)hHelp, L"Help");
 
-    HWND hwnd = CreateWindowW(L"DCCApp", L"DCCToolbox v0.8.0 alpha", WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX,
+    HWND hwnd = CreateWindowW(L"DCCApp", L"DCC Tool v0.8.5 alpha", WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX,
         CW_USEDEFAULT, CW_USEDEFAULT, 600, 680, NULL, hMenu, hInst, NULL);
 
     hStatus = CreateStatusWindowW(WS_CHILD | WS_VISIBLE, L" Gereed.", hwnd, ID_STATUSBAR);
@@ -320,22 +364,49 @@ int WINAPI wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrev, _In_ PWSTR s
     SendMessage(hTab, WM_SETFONT, (WPARAM)hUIFont, TRUE);
 
     const wchar_t* tabs[] = { L" Adressen ", L" CV29 Build ", L" CV29 Decode ", L" Decoder Info ", L" Vertraging " };
-    for (int i = 0; i < 5; i++) { TCITEM t = { TCIF_TEXT }; t.pszText = (LPWSTR)tabs[i]; TabCtrl_InsertItem(hTab, i, &t); }
+    for (int i = 0; i < 5; i++) {
+        TCITEM t = { TCIF_TEXT };
+        t.pszText = (LPWSTR)tabs[i];
+        TabCtrl_InsertItem(hTab, i, &t);
+    }
 
-    RECT rc; GetClientRect(hTab, &rc); TabCtrl_AdjustRect(hTab, FALSE, &rc);
+    RECT rc;
+    GetClientRect(hTab, &rc);
+    TabCtrl_AdjustRect(hTab, FALSE, &rc);
     int w = rc.right - rc.left, h = rc.bottom - rc.top;
+
     page1 = CreateWindowW(L"PageContainer", NULL, WS_CHILD | WS_VISIBLE, rc.left, rc.top, w, h, hTab, NULL, hInst, NULL);
     page2 = CreateWindowW(L"PageContainer", NULL, WS_CHILD, rc.left, rc.top, w, h, hTab, NULL, hInst, NULL);
     page3 = CreateWindowW(L"PageContainer", NULL, WS_CHILD, rc.left, rc.top, w, h, hTab, NULL, hInst, NULL);
     page4 = CreateWindowW(L"PageContainer", NULL, WS_CHILD, rc.left, rc.top, w, h, hTab, NULL, hInst, NULL);
     page5 = CreateWindowW(L"PageContainer", NULL, WS_CHILD, rc.left, rc.top, w, h, hTab, NULL, hInst, NULL);
 
-    CreatePage1(page1); CreatePage2(page2); CreatePage3(page3); CreatePage4(page4); CreatePage5(page5);
+    CreatePage1(page1);
+    CreatePage2(page2);
+    CreatePage3(page3);
+    CreatePage4(page4);
+    CreatePage5(page5);
 
-    auto SetFont = [](HWND p) { HWND c = GetWindow(p, GW_CHILD); while (c) { SendMessage(c, WM_SETFONT, (WPARAM)hUIFont, TRUE); c = GetWindow(c, GW_HWNDNEXT); } };
-    SetFont(page1); SetFont(page2); SetFont(page3); SetFont(page4); SetFont(page5);
+    auto SetFont = [](HWND p) {
+        HWND c = GetWindow(p, GW_CHILD);
+        while (c) {
+            SendMessage(c, WM_SETFONT, (WPARAM)hUIFont, TRUE);
+            c = GetWindow(c, GW_HWNDNEXT);
+        }
+        };
+
+    SetFont(page1);
+    SetFont(page2);
+    SetFont(page3);
+    SetFont(page4);
+    SetFont(page5);
 
     ShowWindow(hwnd, nShow);
-    MSG msg; while (GetMessage(&msg, NULL, 0, 0)) { TranslateMessage(&msg); DispatchMessage(&msg); }
+
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
     return 0;
 }
